@@ -1,3 +1,15 @@
 spring:
   application:
     name: ticket-system
+  docker:
+    compose:
+      enabled: false
+  jpa:
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/tickets"
+    username: "user"
+    password: "password"

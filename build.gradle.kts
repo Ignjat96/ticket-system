@@ -2,6 +2,8 @@ plugins {
     java
     id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
+    id("io.swagger.core.v3.swagger-gradle-plugin") version "3.0.0"
+
 }
 
 group = "com.ignjat"
@@ -25,6 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
