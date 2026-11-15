@@ -22,8 +22,9 @@ jobs:                             # list of jobs; by default they run IN PARALLE
         distribution: 'temurin'   # which build (Eclipse Temurin, free OpenJDK build)
 
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67...   # Gradle action pinned to an exact commit (SHA)
-                                                     # caches dependencies → next build doesn't re-download them
+      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0.
+                                                      # Gradle action pinned to an exact commit (SHA)
+                                                      # caches dependencies → next build doesn't re-download them
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build        # your shell command: compile + tests (Testcontainers starts Postgres in Docker)
@@ -44,6 +45,6 @@ jobs:                             # list of jobs; by default they run IN PARALLE
         distribution: 'temurin'
 
     - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@af1da67...
+      uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0.
                                   # runs Gradle, collects ALL dependencies (incl. transitive)
                                   # and sends the list to GitHub → Dependabot alerts on CVEs
