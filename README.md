@@ -45,6 +45,35 @@ Event ticket reservation backend: a learning project focused on senior Java topi
 > Spring Boot's Docker Compose support is disabled (`spring.docker.compose.enabled: false`)
 > because it requires the `docker` CLI. Start the database manually as shown above.
 
+## Running with Docker / Podman
+
+The `Dockerfile` uses a multi-stage build: a JDK stage builds the JAR, a JRE stage runs it as a non-root user.
+
+1. Start the database (if it isn't running yet):
+
+   ```shell
+   podman compose up -d
+   ```
+
+2. Build the image:
+
+   ```shell
+   podman build -t ticket-system .
+   ```
+
+3. Run the container:
+
+   ```shell
+   podman run --rm -p 8080:8080 \
+     -e DB_URL=jdbc:postgresql://host.containers.internal:5432/tickets \
+     ticket-system
+   ```
+
+   Inside the container, `localhost` is the container itself, so the database on the host
+   is reached via `host.containers.internal` (Docker: `host.docker.internal`).
+
+4. Check: http://localhost:8080/actuator/health → `{"status":"UP"}`
+
 ## Configuration
 
 Database settings are read from environment variables. The defaults match `compose.yaml`.
