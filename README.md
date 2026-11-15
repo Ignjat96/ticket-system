@@ -104,3 +104,13 @@ podman machine start
 
 The schema is managed by Flyway (`src/main/resources/db/migration`).
 Hibernate only validates it (`ddl-auto: validate`).
+
+## Deployment
+
+The app runs on a VPS managed by [Coolify](https://coolify.io/) (self-hosted PaaS).
+
+- **CI:** GitHub Actions builds and tests every pull request and every push to `main`.
+- **CD:** every push to `main` triggers a Coolify deployment via a GitHub App webhook:
+  Coolify builds the image from the `Dockerfile` and replaces the running container.
+- **Database:** PostgreSQL 18 managed by Coolify, reachable only on the internal Docker network.
+- **Configuration:** `DB_URL`, `DB_USERNAME` and `DB_PASSWORD` are set as environment variables in Coolify.
