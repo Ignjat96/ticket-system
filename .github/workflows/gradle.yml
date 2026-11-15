@@ -1,0 +1,49 @@
+name: CI                          # Workflow name: shown in the Actions tab and as the check on the PR
+
+on:                               # WHEN the workflow runs (triggers)
+  push:                           # on push...
+    branches: [ "main" ]          # ...but only to main (e.g. after a PR merge)
+  pull_request:                   # on every PR (open, new commit on the PR branch)...
+    branches: [ "main" ]          # ...but only PRs that target main
+
+jobs:                             # list of jobs; by default they run IN PARALLEL, each on its own machine
+  build:                          # job ID (your own name)
+
+    runs-on: ubuntu-latest        # machine (runner) the job runs on: a fresh Ubuntu VM from GitHub, deleted afterwards
+    permissions:                  # what GITHUB_TOKEN may do in this job
+      contents: read              # read the repo only; can't push or change anything
+
+    steps:                        # steps run IN ORDER, one after another, on the same machine
+    - uses: actions/checkout@v4   # action: clone your code (the commit that triggered the run) onto the runner
+    - name: Set up JDK 21         # step name (shown in the log)
+      uses: actions/setup-java@v4 # action: install Java
+      with:                       # parameters for the action
+        java-version: '21'        # which version
+        distribution: 'temurin'   # which build (Eclipse Temurin, free OpenJDK build)
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@af1da67...   # Gradle action pinned to an exact commit (SHA)
+                                                     # caches dependencies → next build doesn't re-download them
+
+    - name: Build with Gradle Wrapper
+      run: ./gradlew build        # your shell command: compile + tests (Testcontainers starts Postgres in Docker)
+                                  # if any test fails → step fails → job fails → ❌ on the PR
+
+  dependency-submission:          # second job, runs in parallel with build, on a SEPARATE machine
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write             # needs write to submit the dependency graph to GitHub
+
+    steps:
+    - uses: actions/checkout@v4   # separate machine → has to clone the code again
+    - name: Set up JDK 21         # ...and install Java again
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Generate and submit dependency graph
+      uses: gradle/actions/dependency-submission@af1da67...
+                                  # runs Gradle, collects ALL dependencies (incl. transitive)
+                                  # and sends the list to GitHub → Dependabot alerts on CVEs
