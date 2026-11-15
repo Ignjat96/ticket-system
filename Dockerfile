@@ -6,7 +6,6 @@ WORKDIR /workspace
 COPY gradlew settings.gradle.kts build.gradle.kts ./
 COPY gradle gradle
 RUN chmod +x gradlew && ./gradlew dependencies --no-daemon > /dev/null
-RUN ./gradlew dependencies --no-daemon > /dev/null
 
 # 2) Source code → this layer changes on every code change
 COPY src src
