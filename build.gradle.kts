@@ -2,8 +2,6 @@ plugins {
     java
     id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
-    id("io.swagger.core.v3.swagger-gradle-plugin") version "3.0.0"
-
 }
 
 group = "com.ignjat"
