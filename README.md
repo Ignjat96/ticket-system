@@ -52,7 +52,7 @@ Database settings are read from environment variables. The defaults match `compo
 | Variable      | Default                                    |
 |---------------|--------------------------------------------|
 | `DB_URL`      | `jdbc:postgresql://localhost:5432/tickets` |
-| `DB_USERNAME` | `myUser`                                   |
+| `DB_USERNAME` | `myuser`                                   |
 | `DB_PASSWORD` | `password`                                 |
 
 ## Running tests

@@ -4,6 +4,6 @@ services:
     environment:
       - 'POSTGRES_DB=tickets'
       - 'POSTGRES_PASSWORD=password'
-      - 'POSTGRES_USER=myUser'
+      - 'POSTGRES_USER=myuser'
     ports:
       - '5432:5432'
